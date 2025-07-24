@@ -1,0 +1,3 @@
+[functions]
+  directory = "netlify/functions/"
+```5.  맨 아래 초록색 **Commit new file** 버튼을 누르세요.
