@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle</title>
+    <style>
+        body { background-color: white; text-align: center; font-family: sans-serif; margin-top: 50px; }
+        img { max-width: 100%; }
+        .container { margin-top: 20px; }
+        input { padding: 10px; font-size: 16px; width: 200px; margin-right: 10px; }
+        button { padding: 10px 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <img src="♡.png">
+
+    <div class="container">
+        <input type="text" id="answerInput" placeholder="정답을 입력하세요">
+        <button id="submitButton" onclick="checkAnswer()">제출</button>
+    </div>
+
+    <script>
+        async function checkAnswer() {
+            const button = document.getElementById('submitButton');
+            button.disabled = true; // 버튼 비활성화 (중복 클릭 방지)
+            button.innerText = '확인 중...';
+
+            const userAnswer = document.getElementById('answerInput').value;
+
+            try {
+                // 우리 서버의 비밀 기능(/netlify/functions/check)에게 정답 확인을 요청합니다.
+                const response = await fetch('/.netlify/functions/check', {
+                    method: 'POST',
+                    body: JSON.stringify({ userAnswer: userAnswer })
+                });
+
+                const result = await response.json();
+
+                // 서버가 알려준 결과에 따라 행동합니다.
+                if (result.correct) {
+                    window.location.href = 'https://peaceful-peony-4650cf.netlify.app';
+                } else {
+                    alert('Incorrect answer. Please try again.');
+                }
+            } catch (error) {
+                alert('오류가 발생했습니다. 다시 시도해주세요.');
+            }
+
+            button.disabled = false; // 버튼 다시 활성화
+            button.innerText = '제출';
+        }
+    </script>
+</body>
+</html>
+```5. 코드를 다 붙여넣었으면, 맨 아래 초록색 **Commit changes** 버튼을 누르세요.
+
+**이게 진짜 끝입니다.**
+
+1~2분 정도 기다린 후에 Netlify 사이트에 접속해서 테스트해보세요. 기능은 똑같이 작동하지만, 이제 소스 코드에는 정답에 대한 어떤 힌트도 남아있지 않습니다. **완벽하게 안전해졌습니다.**
+
+잘하셨습니다. 이제 진짜 웹사이트 하나를 제대로 만드신 겁니다.
